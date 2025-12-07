@@ -3,198 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evan Downloader | Multi-Server</title>
+    <title>Evan Downloader | Anti-Blokir</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- TEMA & DESIGN FIX --- */
+        /* --- DESIGN SYSTEM --- */
         :root {
-            --bg-color: #121212;
-            --surface-color: #1E1E1E;
-            --primary-color: #BB86FC;
-            --text-main: #E0E0E0;
+            --bg-color: #0f0f0f;
+            --surface-color: #1e1e1e;
+            --primary-color: #8b5cf6; /* Violet */
+            --primary-hover: #7c3aed;
+            --error-color: #ef4444;
+            --text-main: #f3f4f6;
         }
 
         body, html {
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Roboto', sans-serif;
-            height: 100%;
+            min-height: 100vh;
         }
 
-        .card-material {
+        /* Container agar rapi di tengah */
+        .main-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styling */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        .brand-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: -webkit-linear-gradient(45deg, #a78bfa, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .brand-subtitle {
+            color: #9ca3af;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Card Utama */
+        .input-card {
             background-color: var(--surface-color);
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            border: 1px solid #333;
-            padding: 1.5rem;
+            padding: 24px;
+            border: 1px solid #374151;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
 
-        .input.material-input {
-            background-color: #2C2C2C;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 8px;
-            height: 50px;
-        }
-
-        /* --- PERBAIKAN JUDUL BERTUMPUK (SCREENSHOT FIX) --- */
-        .header-section {
-            margin-bottom: 2rem;
-            padding-top: 1rem;
-        }
-        .app-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-            line-height: 1.2;
-            margin-bottom: 0.5rem !important; /* Jarak aman ke bawah */
-        }
-        .app-subtitle {
-            color: #A0A0A0;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-
-        .button.is-primary-mat {
-            background-color: var(--primary-color);
-            color: #000;
-            border: none;
-            font-weight: 700;
-            height: 50px;
+        /* Input Field */
+        .custom-input-group {
+            background-color: #374151;
+            border-radius: 12px;
+            display: flex;
+            padding: 4px;
+            border: 1px solid transparent;
             transition: 0.3s;
         }
-        .button.is-primary-mat:hover {
-            background-color: #a370db;
-            box-shadow: 0 0 15px rgba(187, 134, 252, 0.4);
+        .custom-input-group:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+        }
+        .custom-input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            width: 100%;
+            outline: none;
+        }
+        .paste-btn {
+            background: #4b5563;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            width: 40px;
+            cursor: pointer;
+            margin: 4px;
+            transition: 0.2s;
+        }
+        .paste-btn:hover { background: #6b7280; }
+
+        /* Tombol Proses */
+        .process-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            margin-top: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .process-btn:hover { background-color: var(--primary-hover); }
+        .process-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* Loader */
+        .loader-spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Error Box */
+        .error-box {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error-color);
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            display: none;
+            text-align: center;
         }
 
-        .quality-btn {
-            background-color: #333;
-            color: white;
-            margin-bottom: 10px;
+        /* Result Area */
+        .result-card {
+            background-color: var(--surface-color);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 24px;
+            border: 1px solid #374151;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .video-meta {
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            border-bottom: 1px solid #374151;
+        }
+        .thumb {
+            width: 80px;
+            height: 80px;
             border-radius: 8px;
-            padding: 12px 20px;
+            object-fit: cover;
+            background: #000;
+        }
+        .meta-text h3 { font-size: 1rem; margin: 0 0 4px 0; line-height: 1.3; }
+        .meta-text p { font-size: 0.8rem; color: #9ca3af; margin: 0; }
+
+        .download-list { padding: 16px; }
+        .dl-btn {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: #27272a;
+            color: white;
             text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
             transition: 0.2s;
+            border: 1px solid transparent;
         }
-        .quality-btn:hover { background-color: #444; color: var(--primary-color); }
-
-        #statusText { font-size: 0.8rem; margin-top: 10px; color: #888; }
+        .dl-btn:hover {
+            border-color: var(--primary-color);
+            background: #2d2d30;
+        }
+        .server-status {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-align: center;
+            margin-top: 12px;
+        }
     </style>
 </head>
 <body>
 
-    <section class="section">
-        <div class="container is-max-desktop">
-            
-            <div class="has-text-centered header-section">
-                <h1 class="app-title">
-                    <i class="fas fa-bolt" style="color:var(--primary-color)"></i> EvanDownloader
-                </h1>
-                <p class="app-subtitle">
-                    YOUTUBE • TIKTOK • IG • FACEBOOK
-                </p>
+    <div class="main-container">
+        <div class="brand-header">
+            <h1 class="brand-title"><i class="fas fa-bolt"></i> EvanDownloader</h1>
+            <p class="brand-subtitle">YouTube • TikTok • IG • Facebook</p>
+        </div>
+
+        <div class="input-card">
+            <div class="custom-input-group">
+                <input type="text" id="urlInput" class="custom-input" placeholder="Tempel link video disini...">
+                <button class="paste-btn" onclick="pasteClip()"><i class="fas fa-paste"></i></button>
             </div>
 
-            <div class="card-material">
-                <div class="field has-addons">
-                    <div class="control is-expanded">
-                        <input class="input material-input" id="urlInput" type="text" placeholder="Tempel link video di sini...">
-                    </div>
-                    <div class="control">
-                        <button class="button is-dark" style="height:50px;" onclick="pasteClip()">
-                            <i class="fas fa-paste"></i>
-                        </button>
-                    </div>
-                </div>
+            <button class="process-btn" id="btnProcess" onclick="processVideo()">
+                <div class="loader-spinner" id="loader"></div>
+                <span id="btnText">PROSES VIDEO</span>
+            </button>
 
-                <button class="button is-primary-mat is-fullwidth mt-4" onclick="processVideo()" id="btnProcess">
-                    <span class="icon"><i class="fas fa-download"></i></span>
-                    <span>PROSES VIDEO</span>
-                </button>
+            <p class="server-status" id="serverStatus"></p>
 
-                <p class="has-text-centered" id="statusText"></p>
-
-                <div class="notification is-danger is-light mt-4 is-hidden" id="errorMsg">
-                    <button class="delete" onclick="this.parentElement.classList.add('is-hidden')"></button>
-                    <strong>Gagal!</strong> Semua server sibuk atau link tidak valid.
-                </div>
-            </div>
-
-            <div class="card-material mt-5 is-hidden" id="resultArea">
-                <div class="media">
-                    <div class="media-left">
-                        <figure class="image is-96x96">
-                            <img id="thumbImg" src="" alt="Thumb" style="border-radius: 8px; object-fit: cover;">
-                        </figure>
-                    </div>
-                    <div class="media-content">
-                        <p class="title is-6 has-text-white" id="videoTitle">Video Title</p>
-                        <p class="subtitle is-7 has-text-grey" id="platformTag">Platform</p>
-                    </div>
-                </div>
-                <hr style="background-color: #333;">
-                <div id="downloadList"></div>
-            </div>
-
-            <div class="has-text-centered mt-6 is-size-7 has-text-grey-dark">
-                Powered by Cobalt API (Open Source)
+            <div class="error-box" id="errorBox">
+                <i class="fas fa-exclamation-circle"></i> <span id="errorText">Terjadi kesalahan.</span>
             </div>
         </div>
-    </section>
+
+        <div class="result-card" id="resultArea">
+            <div class="video-meta">
+                <img id="thumbImg" src="" class="thumb" alt="Thumbnail">
+                <div class="meta-text">
+                    <h3 id="videoTitle">Judul Video</h3>
+                    <p id="platformTag">Platform</p>
+                </div>
+            </div>
+            <div class="download-list" id="downloadList">
+                </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #4b5563; font-size: 0.8rem;">
+            Powered by Cobalt & CORS Proxy
+        </div>
+    </div>
 
     <script>
-        // DAFTAR SERVER CADANGAN (Jika satu mati, pindah ke bawahnya)
-        const API_INSTANCES = [
-            'https://cobalt.kwiatekmiki.pl/api/json',     // Server Cadangan 1
-            'https://api.cobalt.tools/api/json',          // Server Utama (Sering strict)
-            'https://cobalt.q1.si/api/json',              // Server Cadangan 2
-            'https://co.wuk.sh/api/json'                  // Server Lama (Sering Down)
+        // --- LOGIKA UTAMA ---
+        
+        // Proxy List: Membantu menembus blokir browser
+        const PROXY_URL = 'https://corsproxy.io/?'; 
+        
+        // Instance Cobalt yang dikenal stabil
+        const INSTANCES = [
+            'https://cobalt.kwiatekmiki.pl/api/json',
+            'https://cobalt.q1.si/api/json',
+            'https://co.wuk.sh/api/json'
         ];
 
         async function pasteClip() {
             try {
                 const text = await navigator.clipboard.readText();
                 document.getElementById('urlInput').value = text;
-            } catch (e) { alert('Izin paste ditolak browser'); }
+            } catch (e) { alert('Silakan tempel manual'); }
         }
 
         async function processVideo() {
             const url = document.getElementById('urlInput').value.trim();
-            const btn = document.getElementById('btnProcess');
-            const statusText = document.getElementById('statusText');
-            const resultArea = document.getElementById('resultArea');
-            const errorMsg = document.getElementById('errorMsg');
-            const downloadList = document.getElementById('downloadList');
-
-            if (!url) { alert("Masukkan link dulu bro!"); return; }
+            if (!url) { showError("Mohon masukkan link video dulu."); return; }
 
             // Reset UI
-            btn.classList.add('is-loading');
-            resultArea.classList.add('is-hidden');
-            errorMsg.classList.add('is-hidden');
-            downloadList.innerHTML = '';
-            
+            setLoading(true);
+            document.getElementById('resultArea').style.display = 'none';
+            document.getElementById('errorBox').style.display = 'none';
+            document.getElementById('downloadList').innerHTML = '';
+
             let success = false;
 
-            // --- LOOPING SERVER (Logika Anti-Macet) ---
-            for (const apiBase of API_INSTANCES) {
-                if(success) break; // Jika sudah berhasil, stop looping
+            // Loop mencoba berbagai server
+            for (let i = 0; i < INSTANCES.length; i++) {
+                if (success) break;
                 
+                const serverUrl = INSTANCES[i];
+                // Update teks status agar user tahu kita sedang bekerja
+                document.getElementById('serverStatus').innerText = `Mencoba server ${i+1}...`;
+
                 try {
-                    statusText.innerText = `Mencoba server: ${new URL(apiBase).hostname}...`;
+                    // TRIK: Kita bungkus request dengan PROXY agar tidak kena CORS
+                    // Note: corsproxy.io support POST requests
+                    const targetUrl = PROXY_URL + encodeURIComponent(serverUrl);
                     
-                    const response = await fetch(apiBase, {
+                    const response = await fetch(targetUrl, {
                         method: 'POST',
-                        headers: { 
+                        headers: {
                             'Accept': 'application/json',
-                            'Content-Type': 'application/json' 
+                            'Content-Type': 'application/json',
+                            // Header tambahan agar server percaya ini valid
+                            'Origin': 'https://evan-downloader.github.io' 
                         },
                         body: JSON.stringify({
                             url: url,
@@ -204,61 +301,92 @@
                     });
 
                     const data = await response.json();
-                    
-                    if (['error', 'rate-limit'].includes(data.status)) throw new Error("Server error");
-                    
-                    // JIKA SUKSES SAMPAI SINI:
+
+                    if (data.status === 'error' || data.status === 'ratelimit') {
+                        throw new Error(data.text || "Server Error");
+                    }
+
+                    // Jika sukses:
                     success = true;
-                    statusText.innerText = "Berhasil!";
+                    document.getElementById('serverStatus').innerText = "Berhasil!";
                     renderResult(data, url);
 
                 } catch (err) {
-                    console.log(`Gagal di ${apiBase}, lanjut server berikutnya...`);
+                    console.log(`Gagal di server ${i+1}: ${err.message}`);
                 }
             }
 
-            // Jika semua server gagal
             if (!success) {
-                statusText.innerText = "";
-                errorMsg.classList.remove('is-hidden');
+                document.getElementById('serverStatus').innerText = "";
+                showError("Gagal mengambil video. Coba link lain atau coba lagi nanti.");
             }
-            
-            btn.classList.remove('is-loading');
+
+            setLoading(false);
         }
 
         function renderResult(data, originalUrl) {
-            document.getElementById('resultArea').classList.remove('is-hidden');
+            document.getElementById('resultArea').style.display = 'block';
             
-            // Set Judul & Thumb (Default jika kosong)
-            document.getElementById('videoTitle').innerText = data.filename || "Video Siap Download";
-            document.getElementById('thumbImg').src = "https://img.icons8.com/fluency/96/video.png"; // Icon default
+            // Set Data
+            document.getElementById('videoTitle').innerText = data.filename || "Video Ready";
+            document.getElementById('thumbImg').src = "https://img.icons8.com/fluency/96/video-playlist.png";
             
             // Deteksi Platform
-            let platform = "Web";
-            if(originalUrl.includes('youtu')) platform = "YouTube";
+            let platform = "Unknown Source";
+            if(originalUrl.includes('youtube') || originalUrl.includes('youtu.be')) platform = "YouTube";
             if(originalUrl.includes('tiktok')) platform = "TikTok";
             if(originalUrl.includes('instagram')) platform = "Instagram";
+            if(originalUrl.includes('facebook')) platform = "Facebook";
             document.getElementById('platformTag').innerText = platform;
 
-            const container = document.getElementById('downloadList');
+            const list = document.getElementById('downloadList');
 
             // Render Tombol
-            if (data.url) createBtn(data.url, "Download Video (HD)", "fas fa-video");
+            if (data.url) createBtn("Download Video (HD)", data.url, "fas fa-video");
+            
             if (data.picker) {
-                data.picker.forEach(p => {
-                    createBtn(p.url, `Download ${p.type.toUpperCase()}`, p.type === 'audio' ? "fas fa-music" : "fas fa-video");
+                data.picker.forEach(item => {
+                    let label = item.type === 'audio' ? "Download Audio (MP3)" : "Download Video";
+                    let icon = item.type === 'audio' ? "fas fa-music" : "fas fa-video";
+                    createBtn(label, item.url, icon);
                 });
             }
-            if (data.audio) createBtn(data.audio, "Download Audio Only", "fas fa-music");
+            
+            if (data.audio) createBtn("Download Audio Only", data.audio, "fas fa-music");
         }
 
-        function createBtn(link, text, icon) {
+        function createBtn(text, url, iconClass) {
             const a = document.createElement('a');
-            a.className = 'quality-btn';
-            a.href = link;
+            a.className = 'dl-btn';
+            a.href = url;
             a.target = '_blank';
-            a.innerHTML = `<span><i class="${icon} mr-2"></i> ${text}</span> <i class="fas fa-chevron-right"></i>`;
+            a.innerHTML = `
+                <span><i class="${iconClass}" style="margin-right:8px; color:#a78bfa;"></i> ${text}</span>
+                <i class="fas fa-download" style="font-size:0.8rem; opacity:0.7;"></i>
+            `;
             document.getElementById('downloadList').appendChild(a);
+        }
+
+        function setLoading(isLoading) {
+            const btn = document.getElementById('btnProcess');
+            const loader = document.getElementById('loader');
+            const txt = document.getElementById('btnText');
+            
+            if (isLoading) {
+                btn.disabled = true;
+                loader.style.display = 'block';
+                txt.style.display = 'none';
+            } else {
+                btn.disabled = false;
+                loader.style.display = 'none';
+                txt.style.display = 'block';
+            }
+        }
+
+        function showError(msg) {
+            const box = document.getElementById('errorBox');
+            document.getElementById('errorText').innerText = msg;
+            box.style.display = 'block';
         }
     </script>
 </body>
