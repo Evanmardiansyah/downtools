@@ -3,22 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evan Downloader | Open Source</title>
-    
+    <title>Evan Downloader | Multi-Server</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- MATERIAL DARK THEME OVERRIDES --- */
+        /* --- TEMA & DESIGN FIX --- */
         :root {
             --bg-color: #121212;
             --surface-color: #1E1E1E;
-            --primary-color: #BB86FC; /* Material Purple */
-            --secondary-color: #03DAC6; /* Material Teal */
+            --primary-color: #BB86FC;
             --text-main: #E0E0E0;
-            --text-muted: #A0A0A0;
-            --input-bg: #2C2C2C;
         }
 
         body, html {
@@ -28,99 +24,68 @@
             height: 100%;
         }
 
-        /* Helper Utilities */
-        .has-bg-surface { background-color: var(--surface-color); }
-        .text-primary { color: var(--primary-color) !important; }
-        
-        /* Card Styling */
         .card-material {
             background-color: var(--surface-color);
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             border: 1px solid #333;
-            transition: transform 0.2s;
+            padding: 1.5rem;
         }
 
-        /* Input Styling */
         .input.material-input {
-            background-color: var(--input-bg);
+            background-color: #2C2C2C;
             border: 1px solid #444;
             color: white;
             border-radius: 8px;
-            box-shadow: none;
             height: 50px;
         }
-        .input.material-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 1px var(--primary-color);
-        }
-        .input::placeholder { color: #666; }
 
-        /* Button Styling */
-        .button.is-material {
-            border-radius: 8px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border: none;
-            height: 50px;
-            transition: all 0.3s;
+        /* --- PERBAIKAN JUDUL BERTUMPUK (SCREENSHOT FIX) --- */
+        .header-section {
+            margin-bottom: 2rem;
+            padding-top: 1rem;
         }
+        .app-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 0.5rem !important; /* Jarak aman ke bawah */
+        }
+        .app-subtitle {
+            color: #A0A0A0;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
         .button.is-primary-mat {
             background-color: var(--primary-color);
             color: #000;
+            border: none;
+            font-weight: 700;
+            height: 50px;
+            transition: 0.3s;
         }
         .button.is-primary-mat:hover {
-            background-color: #A370DB;
-            box-shadow: 0 0 15px rgba(187, 134, 252, 0.3);
-        }
-        
-        /* Result Area */
-        .result-box {
-            display: none; /* Hidden by default */
-            animation: slideUp 0.4s ease-out;
-        }
-        
-        .video-thumb {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
+            background-color: #a370db;
+            box-shadow: 0 0 15px rgba(187, 134, 252, 0.4);
         }
 
-        /* Loading Spinner */
-        .loader-wrapper {
-            display: none;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(187,134,252,0.3);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Download Button List */
         .quality-btn {
             background-color: #333;
             color: white;
             margin-bottom: 10px;
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: background 0.2s;
             text-decoration: none;
+            transition: 0.2s;
         }
-        .quality-btn:hover { background-color: #444; color: var(--secondary-color); }
+        .quality-btn:hover { background-color: #444; color: var(--primary-color); }
+
+        #statusText { font-size: 0.8rem; margin-top: 10px; color: #888; }
     </style>
 </head>
 <body>
@@ -128,191 +93,172 @@
     <section class="section">
         <div class="container is-max-desktop">
             
-            <div class="has-text-centered mb-6">
-                <h1 class="title is-4 has-text-white mb-2">
-                    <i class="fas fa-bolt text-primary"></i> Evan<span class="has-text-weight-light">Downloader</span>
+            <div class="has-text-centered header-section">
+                <h1 class="app-title">
+                    <i class="fas fa-bolt" style="color:var(--primary-color)"></i> EvanDownloader
                 </h1>
-                <p class="subtitle is-7 has-text-grey">
-                    YouTube • TikTok • Facebook • IG • Twitter
+                <p class="app-subtitle">
+                    YOUTUBE • TIKTOK • IG • FACEBOOK
                 </p>
             </div>
 
-            <div class="card-material p-5">
-                
+            <div class="card-material">
                 <div class="field has-addons">
                     <div class="control is-expanded">
                         <input class="input material-input" id="urlInput" type="text" placeholder="Tempel link video di sini...">
                     </div>
                     <div class="control">
-                        <button class="button is-material is-dark" onclick="pasteClip()">
+                        <button class="button is-dark" style="height:50px;" onclick="pasteClip()">
                             <i class="fas fa-paste"></i>
                         </button>
                     </div>
                 </div>
 
-                <button class="button is-material is-primary-mat is-fullwidth mt-3" onclick="processVideo()" id="btnProcess">
+                <button class="button is-primary-mat is-fullwidth mt-4" onclick="processVideo()" id="btnProcess">
                     <span class="icon"><i class="fas fa-download"></i></span>
-                    <span>Proses Video</span>
+                    <span>PROSES VIDEO</span>
                 </button>
 
-                <div class="loader-wrapper" id="loader">
-                    <div class="spinner"></div>
-                </div>
+                <p class="has-text-centered" id="statusText"></p>
 
-                <article class="message is-danger mt-4 is-hidden" id="errorMsg">
-                    <div class="message-body is-size-7">
-                        Gagal mengambil video. Pastikan link benar atau coba lagi nanti.
-                    </div>
-                </article>
-
-            </div>
-
-            <div class="card-material mt-5 p-5 result-box" id="resultArea">
-                <div class="columns is-mobile is-vcentered">
-                    <div class="column is-one-third">
-                        <img id="thumbImg" src="" alt="Thumb" class="video-thumb shadow-lg">
-                    </div>
-                    <div class="column">
-                        <h3 class="title is-6 has-text-white" id="videoTitle">Judul Video</h3>
-                        <span class="tag is-black has-text-grey-light" id="platformTag">Unknown</span>
-                    </div>
-                </div>
-
-                <hr style="background-color: #333; height: 1px; border: none;">
-
-                <div>
-                    <p class="is-size-7 has-text-grey mb-3 font-weight-bold">OPSI DOWNLOAD</p>
-                    <div id="downloadList">
-                        </div>
+                <div class="notification is-danger is-light mt-4 is-hidden" id="errorMsg">
+                    <button class="delete" onclick="this.parentElement.classList.add('is-hidden')"></button>
+                    <strong>Gagal!</strong> Semua server sibuk atau link tidak valid.
                 </div>
             </div>
 
-            <footer class="footer has-bg-surface mt-6 pt-4 pb-4" style="background: transparent;">
-                <div class="content has-text-centered is-size-7 has-text-grey-dark">
-                    <p>Powered by <strong>Cobalt API</strong> (Open Source).</p>
+            <div class="card-material mt-5 is-hidden" id="resultArea">
+                <div class="media">
+                    <div class="media-left">
+                        <figure class="image is-96x96">
+                            <img id="thumbImg" src="" alt="Thumb" style="border-radius: 8px; object-fit: cover;">
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <p class="title is-6 has-text-white" id="videoTitle">Video Title</p>
+                        <p class="subtitle is-7 has-text-grey" id="platformTag">Platform</p>
+                    </div>
                 </div>
-            </footer>
+                <hr style="background-color: #333;">
+                <div id="downloadList"></div>
+            </div>
 
+            <div class="has-text-centered mt-6 is-size-7 has-text-grey-dark">
+                Powered by Cobalt API (Open Source)
+            </div>
         </div>
     </section>
 
     <script>
-        // Menggunakan instance Cobalt public. 
-        // Jika instance ini down, ganti dengan instance lain seperti: https://cobalt-api.kwiatekmiki.pl/
-        const API_URL = 'https://co.wuk.sh/api/json'; 
+        // DAFTAR SERVER CADANGAN (Jika satu mati, pindah ke bawahnya)
+        const API_INSTANCES = [
+            'https://cobalt.kwiatekmiki.pl/api/json',     // Server Cadangan 1
+            'https://api.cobalt.tools/api/json',          // Server Utama (Sering strict)
+            'https://cobalt.q1.si/api/json',              // Server Cadangan 2
+            'https://co.wuk.sh/api/json'                  // Server Lama (Sering Down)
+        ];
 
-        // Fungsi Paste dari Clipboard
         async function pasteClip() {
             try {
                 const text = await navigator.clipboard.readText();
                 document.getElementById('urlInput').value = text;
-            } catch (err) {
-                alert('Browser tidak mengizinkan akses clipboard otomatis.');
-            }
+            } catch (e) { alert('Izin paste ditolak browser'); }
         }
 
         async function processVideo() {
             const url = document.getElementById('urlInput').value.trim();
             const btn = document.getElementById('btnProcess');
-            const loader = document.getElementById('loader');
+            const statusText = document.getElementById('statusText');
             const resultArea = document.getElementById('resultArea');
             const errorMsg = document.getElementById('errorMsg');
             const downloadList = document.getElementById('downloadList');
 
-            if (!url) {
-                alert("Mohon masukkan link video!");
-                return;
-            }
+            if (!url) { alert("Masukkan link dulu bro!"); return; }
 
-            // Reset State
+            // Reset UI
             btn.classList.add('is-loading');
-            loader.style.display = 'flex';
-            resultArea.style.display = 'none';
+            resultArea.classList.add('is-hidden');
             errorMsg.classList.add('is-hidden');
             downloadList.innerHTML = '';
+            
+            let success = false;
 
-            try {
-                // Konfigurasi Request ke Cobalt
-                // Kita mengirim JSON payload sesuai dokumentasi Cobalt
-                const payload = {
-                    url: url,
-                    vQuality: "max",
-                    filenamePattern: "basic",
-                    isAudioOnly: false
-                };
-
-                // NOTE: Menggunakan 'Accept: application/json' dan 'Content-Type: application/json'
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                const data = await response.json();
-
-                if (data.status === 'error' || !data.url && !data.picker) {
-                    throw new Error(data.text || "Gagal memproses");
-                }
-
-                // --- SUKSES ---
+            // --- LOOPING SERVER (Logika Anti-Macet) ---
+            for (const apiBase of API_INSTANCES) {
+                if(success) break; // Jika sudah berhasil, stop looping
                 
-                // 1. Set Judul & Platform (Cobalt kadang tidak kirim judul/thumb, kita handle default)
-                document.getElementById('videoTitle').innerText = "Video Siap Diunduh";
-                // Deteksi platform sederhana dari URL
-                let platform = "Web";
-                if(url.includes('youtube') || url.includes('youtu.be')) platform = "YouTube";
-                if(url.includes('tiktok')) platform = "TikTok";
-                if(url.includes('facebook') || url.includes('fb.watch')) platform = "Facebook";
-                if(url.includes('instagram')) platform = "Instagram";
-                document.getElementById('platformTag').innerText = platform;
-
-                // Thumbnail (Cobalt jarang kirim thumb di response JSON simple, kita pakai placeholder icon jika kosong)
-                // Jika mau thumb akurat, butuh API tambahan. Di sini kita pakai icon generik jika tidak ada.
-                document.getElementById('thumbImg').src = "https://img.freepik.com/free-vector/neon-music-background_53876-91257.jpg?w=740"; 
-
-                // 2. Render Tombol Download
-                
-                // KASUS A: Single URL (Langsung dapat link download)
-                if (data.url) {
-                    createButton("Download Video (Max Quality)", data.url, "fas fa-video");
-                } 
-                
-                // KASUS B: Picker (Banyak pilihan kualitas/audio)
-                if (data.picker) {
-                    data.picker.forEach(item => {
-                        let label = "Download";
-                        if (item.type === 'video') label = `Video`;
-                        if (item.type === 'audio') label = `Audio (MP3)`;
-                        createButton(label, item.url, item.type === 'audio' ? "fas fa-music" : "fas fa-video");
+                try {
+                    statusText.innerText = `Mencoba server: ${new URL(apiBase).hostname}...`;
+                    
+                    const response = await fetch(apiBase, {
+                        method: 'POST',
+                        headers: { 
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json' 
+                        },
+                        body: JSON.stringify({
+                            url: url,
+                            vQuality: "max",
+                            isAudioOnly: false
+                        })
                     });
-                }
-                
-                // Tampilkan Hasil
-                resultArea.style.display = 'block';
 
-            } catch (error) {
-                console.error(error);
-                errorMsg.classList.remove('is-hidden');
-            } finally {
-                btn.classList.remove('is-loading');
-                loader.style.display = 'none';
+                    const data = await response.json();
+                    
+                    if (['error', 'rate-limit'].includes(data.status)) throw new Error("Server error");
+                    
+                    // JIKA SUKSES SAMPAI SINI:
+                    success = true;
+                    statusText.innerText = "Berhasil!";
+                    renderResult(data, url);
+
+                } catch (err) {
+                    console.log(`Gagal di ${apiBase}, lanjut server berikutnya...`);
+                }
             }
+
+            // Jika semua server gagal
+            if (!success) {
+                statusText.innerText = "";
+                errorMsg.classList.remove('is-hidden');
+            }
+            
+            btn.classList.remove('is-loading');
         }
 
-        function createButton(text, link, iconClass) {
+        function renderResult(data, originalUrl) {
+            document.getElementById('resultArea').classList.remove('is-hidden');
+            
+            // Set Judul & Thumb (Default jika kosong)
+            document.getElementById('videoTitle').innerText = data.filename || "Video Siap Download";
+            document.getElementById('thumbImg').src = "https://img.icons8.com/fluency/96/video.png"; // Icon default
+            
+            // Deteksi Platform
+            let platform = "Web";
+            if(originalUrl.includes('youtu')) platform = "YouTube";
+            if(originalUrl.includes('tiktok')) platform = "TikTok";
+            if(originalUrl.includes('instagram')) platform = "Instagram";
+            document.getElementById('platformTag').innerText = platform;
+
             const container = document.getElementById('downloadList');
+
+            // Render Tombol
+            if (data.url) createBtn(data.url, "Download Video (HD)", "fas fa-video");
+            if (data.picker) {
+                data.picker.forEach(p => {
+                    createBtn(p.url, `Download ${p.type.toUpperCase()}`, p.type === 'audio' ? "fas fa-music" : "fas fa-video");
+                });
+            }
+            if (data.audio) createBtn(data.audio, "Download Audio Only", "fas fa-music");
+        }
+
+        function createBtn(link, text, icon) {
             const a = document.createElement('a');
             a.className = 'quality-btn';
             a.href = link;
-            a.target = '_blank'; // Buka tab baru agar trigger download
-            a.innerHTML = `
-                <span class="has-text-weight-medium"><i class="${iconClass} mr-2"></i> ${text}</span>
-                <span class="icon has-text-secondary"><i class="fas fa-download"></i></span>
-            `;
-            container.appendChild(a);
+            a.target = '_blank';
+            a.innerHTML = `<span><i class="${icon} mr-2"></i> ${text}</span> <i class="fas fa-chevron-right"></i>`;
+            document.getElementById('downloadList').appendChild(a);
         }
     </script>
 </body>
